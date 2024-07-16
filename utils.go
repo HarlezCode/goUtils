@@ -5,6 +5,7 @@ import(
 	"os"
 	"fmt"
 	"reflect"
+	"strings"
 )
 
 
@@ -133,13 +134,40 @@ func (a *Array) Acc(index int)(interface{}){
 	return v
 }
 
+func CleanString(s string)(string){
+	o := strings.Replace(s, "\n", "", -1)
+	o = strings.Replace(o, "\r", "", -1)
+	return o
+}
 
-func ReadLinesIntoArr(number int)([]string){
+
+func ReadLinesArr(number int)([]string){
 	scanner := bufio.NewScanner(os.Stdin)
 	a := make([]string, number)
 	for i := 0; i < number; i++{
 		scanner.Scan()
-		a[i] = scanner.Text()
+		a[i] = CleanString(scanner.Text())
+	}
+	return a
+}
+
+func ReadLinesArrReader(number int, scanner *bufio.Reader)([]string){
+	a := make([]string, number)
+	
+	defer func(){
+		err := recover()
+		if err != nil{
+			print(err)
+		}
+	}()
+	
+	
+	if number == 0{
+		panic("Number is Zero")
+	}
+	for i := 0; i < number; i++{
+		a[i], _ = scanner.ReadString('\n')
+		a[i] = CleanString(a[i])
 	}
 	return a
 }
