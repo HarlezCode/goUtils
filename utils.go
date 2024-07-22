@@ -1,4 +1,4 @@
-package utils
+package main
 
 import(
 	"bufio"
@@ -13,6 +13,30 @@ type Array struct{
 	Ls []interface{}
 	Length int
 }
+
+
+func DefaultRecovery(s string){
+	err := recover()
+	fmt.Println(s)
+	if err != nil{
+		fmt.Println(err)
+	}
+}
+
+func SubString(in string, start int, length int)(string){
+	runes := []rune(in)
+	if start >= len(runes){
+		return ""
+	}
+
+	if start+length > len(runes){
+		length = len(runes) - start
+	}
+
+	return string(runes[start : start+length])
+
+}
+
 
 // SliceToArg converts []any to []interface{} for parsing
 func SliceToArg(arg interface{})(output []interface{}, c int, ok bool){
